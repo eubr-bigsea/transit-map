@@ -190,12 +190,13 @@ var simulation_manager = (function(){
             $.each(edges, function(k, edgeID) {
                 if (edgeID.substr(0, 1) === '-') {
                     edgeID = edgeID.substr(1);
-                    var points = network_lines[edgeID].points.slice().reverse();
+                    var points = network_lines[edgeID]?network_lines[edgeID].points.slice().reverse():[];
                 } else {
-                    var points = network_lines[edgeID].points;
+					
+                    var points = network_lines[edgeID]?network_lines[edgeID].points: [];
                 }
                 routePoints = routePoints.concat(points);
-                dAB += network_lines[edgeID].length;
+                dAB += network_lines[edgeID]? network_lines[edgeID].length: 0;
             });
             
             var routeDetailedParts = [];
@@ -207,7 +208,7 @@ var simulation_manager = (function(){
                     edgeID = edgeID.substr(1);
                 }
                 
-                var is_detailed = network_lines[edgeID].is_detailed;
+                var is_detailed = network_lines[edgeID] && network_lines[edgeID].is_detailed;
                 if (is_detailed) {
                     if (is_detailed_prev === false) {
                         routeDetailedParts[routeDetailedParts_i] = {
@@ -224,7 +225,7 @@ var simulation_manager = (function(){
                 
                 is_detailed_prev = is_detailed;
                 
-                dAC += network_lines[edgeID].length;
+                dAC += network_lines[edgeID] ? network_lines[edgeID].length :0;
             });
             
             var route = {
@@ -289,7 +290,7 @@ var simulation_manager = (function(){
                     edge_coords.push(new google.maps.LatLng(feature_coord[1], feature_coord[0]));
                 });
 
-                var edge_id = feature.properties.edge_id;
+                var edge_id = feature.properties.edge_id || feature.properties.shape_id;
 
                 network_lines[edge_id] = {
                     points: edge_coords,
@@ -875,7 +876,17 @@ var simulation_manager = (function(){
             }
 
             map = new google.maps.Map(document.getElementById("map_canvas"), map_options);
-            
+            /*
+            var kmlLayer = new google.maps.KmlLayer();
+            var kmlUrl = 'http://beta.ctweb.inweb.org.br/publico/stops.kml';
+            var kmlOptions = {
+              //suppressInfoWindows: true,
+              //preserveViewport: false,
+              map: map,
+              url: kmlUrl
+            };
+            var kmlLayer = new google.maps.KmlLayer(kmlOptions);
+            */
             var stamen_map = new google.maps.StamenMapType('watercolor');
             stamen_map.set('name', 'Stamen watercolor');
             map.mapTypes.set('stamen', stamen_map);
@@ -1416,7 +1427,7 @@ var simulation_manager = (function(){
                 this.arrS               = parseTimes(arrivals);
                 this.shape_percent      = shape_percent;
 
-                this.route_icon         = params.route_short_name;
+                this.route_icon         = params.type;
             }
             
             var marker = new google.maps.Marker({
