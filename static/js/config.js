@@ -25,7 +25,7 @@
   "xft_layer_ids.topology_edges": "1-1B2tYIO2JSnaacEHO8sfWVjm1S387lMEkHkjc4",
   "xft_layer_ids.topology_stations": "1YppDCNud7566oK_VwHsuUhGJqnm_CLDStMS3IuM",
   "xapi_paths.trips": "api/demo/trips.json",
-  "api_paths.trips": "http://nereus.speed.dcc.ufmg.br:5000/[hhmm]",
+  "api_paths.trips": "/transit-map-api/[hhmm]",
   "api_paths.departures": null,
   "geojson.gtfs_shapes": "api/geojson/edges1.json",
   "geojson.gtfs_stops": "api/geojson/stations1.json",
